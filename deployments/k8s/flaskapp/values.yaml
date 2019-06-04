@@ -1,0 +1,133 @@
+# Default values for flaskapp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Your app name (without space)
+# Ex:
+# nameOverride: "hello-django"
+# fullnameOverride: "hello-django-awesome-app"
+nameOverride: ""
+fullnameOverride: ""
+
+# The number of instance
+replicaCount: 1
+
+# You app image
+# If the image is stored in a private registry,
+#   you will need to specify pullSecret and credentialDockerConfig
+#   pullSecret is name of secret. You can name it to whatever you want, eg: regcred
+#   credentialDockerConfig is Docker config file after you login to your registry, which is in ~/.docker/config.json by default
+#     in Google Cloud Registry: https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
+#     in Docker Hub: execute command `docker login`
+image: {}
+  # registry: gcr.io
+  # repository: google-samples/hello-app
+  # tag: "1.0"
+  # port: 5000
+  # pullPolicy: IfNotPresent
+  # pullSecret: # 
+  # credentialDockerConfig: #
+  # command: #
+
+# Your app health check.
+healthcheck:
+  enabled: true
+  liveness: "/"
+  readiness: "/"
+  host: ""
+
+# K8s service configuration
+# By default, `type` is ClusterIP and it should work.
+service:
+  type: ClusterIP
+  port: 80
+
+# Ingress configuration
+# You will need to specify the `hosts` config, that then will be used by Ingress Controller to route the request to your app
+# tls is enabled for HTTPS
+ingress:
+  hosts: []
+    # - host: myapp.k8s.teko.vn
+    #   paths:
+    #     - ""
+
+  tls: true
+
+# `initContainers` are containers that run before k8s launch your app
+# They are used to do initialization of your app
+initContainers: |
+  # - name: do-something
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo Hello']
+
+extraContainers: |
+  # - name: do-something
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo Hello']
+
+# `volumes` are k8s volume used by your app
+# `volumes` can have values from configMap or secret, then will be mounted as directories
+volumes: |
+  # - name: tls-volume
+  #   secret:
+  #     secretName: teko-tls
+  # - name: config-volume
+  #   configMap:
+  #     name: flaskapp-config
+
+# `volumeMounts` is where you mount a volume to app's containers as directories
+volumeMounts: |
+  # - name: extras
+  #   mountPath: /usr/share/extras
+  #   readOnly: true
+
+# `resources` is where you limit resources used by app's containers
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+
+# `autoscaling` is where you specify auto-scale policy based on CPU and memory consumed
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 60
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 60
+
+
+# Your app's secrets
+secrets: []
+  # - name: db-url
+  #   value: <database url here>
+
+# Your app's env vars
+# A env var could be a string value, or a value from secret
+environmentVariables: []
+  # - name: FLASK_CONFIG
+  #   value: "production"
+  # - name: DATABASE_URL
+  #   valueFromSecret: db-url
+
+
+# Database migration step
+# It will be executed after your app installed or upgraded
+migration:
+  enabled: false
+  command: |
+    ["/bin/sh", "-c", "flask db upgrade"]
