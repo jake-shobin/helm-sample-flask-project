@@ -107,10 +107,10 @@ workflows:
   feature-development:
     triggers:
       - schedule:
-        filters:
-          branches:
-            only:
-              - /feature\/.*/
+          filters:
+            branches:
+              only:
+                - /feature\/.*/
     jobs:
       - test
       - approve?:
@@ -127,10 +127,10 @@ workflows:
   production:
     triggers:
       - schedule:
-        filters:
-          branches:
-            only:
-              - master
+          filters:
+            branches:
+              only:
+                - master
     jobs:
       - test
       - build-image:
