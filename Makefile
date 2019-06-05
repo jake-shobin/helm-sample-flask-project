@@ -6,15 +6,15 @@ HARBOR_SERVER := https://harbor.sample.teko.vn
 RELEASE_NAME := $(PROJECT_NAME)
 IMAGE_TAG := $(VERSION)
 BRANCH := ""
-IMAGE := $(IMAGE_REPO):$(IMAGE_TAG)
 ifdef CIRCLE_BRANCH
 	ifneq ($(CIRCLE_BRANCH), master)
 		BRANCH = $(shell echo $(CIRCLE_BRANCH) | sed 's/.*\///g' | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]')
-		RELEASE_NAME := $(shell echo $(RELEASE_NAME)-$(BRANCH) | cut -c1-15)
+		RELEASE_NAME := $(shell echo $(RELEASE_NAME)-$(BRANCH) | cut -c1-30)
 		REVISION := $(shell echo $(CIRCLE_SHA1) | cut -c1-7)
 		IMAGE_TAG := dev-$(REVISION)
 	endif
 endif
+IMAGE := $(IMAGE_REPO):$(IMAGE_TAG)
 
 k8s-login-dev:
 	@mkdir -p $(HOME)/.kube
@@ -35,9 +35,10 @@ push-image:
 
 helm-add-repo:
 	helm repo add --username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) teko $(HARBOR_SERVER)/chartrepo
+	helm repo update
 
 feed-values:
-	sed "s/{{ branch }}/$(branch)/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
+	sed "s/{{ branch }}/$(BRANCH)/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
 
 helm-deploy:
 	helm upgrade $(RELEASE_NAME) teko/flaskapp -i \
