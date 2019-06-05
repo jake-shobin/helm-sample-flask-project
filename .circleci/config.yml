@@ -75,7 +75,7 @@ jobs:
           command: make helm-add-repo
       - run:
           name: Feed values
-          command: make feed-values
+          command: make feed-values-staging
       - run:
           name: Deploy
           command: make helm-deploy-staging
