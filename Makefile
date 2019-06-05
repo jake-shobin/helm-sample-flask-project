@@ -41,7 +41,7 @@ feed-values:
 	sed "s/{{ branch }}/$(BRANCH)/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
 
 helm-deploy:
-	helm upgrade $(RELEASE_NAME) teko/library/flaskapp -i \
+	@helm upgrade $(RELEASE_NAME) teko/library/flaskapp -i \
 		--username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) \
 		--version 0.0.1 \
 		--namespace $(RELEASE_NAME) \
@@ -49,7 +49,7 @@ helm-deploy:
 		--set image.tag=$(IMAGE_TAG)
 
 helm-deploy-staging:
-	helm upgrade staging-$(RELEASE_NAME) teko/library/flaskapp -i \
+	@helm upgrade staging-$(RELEASE_NAME) teko/library/flaskapp -i \
 		--username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) \
 		--version 0.0.1 \
 		--namespace staging-$(RELEASE_NAME) \
