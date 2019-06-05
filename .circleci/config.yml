@@ -105,12 +105,6 @@ jobs:
 workflows:
   version: 2
   feature-development:
-    triggers:
-      - schedule:
-          filters:
-            branches:
-              only:
-                - /feature\/.*/
     jobs:
       - test
       - approve?:
@@ -123,26 +117,25 @@ workflows:
       - deploy-feature:
           requires:
             - build-image
-  
-  production:
-    triggers:
-      - schedule:
+      - deploy-staging:
+          requires:
+            - build-image
           filters:
             branches:
               only:
                 - master
-    jobs:
-      - test
-      - build-image:
-          requires:
-            - test
-      - deploy-staging:
-          requires:
-            - build-image
       - deploy?:
           type: approval
           requires:
             - deploy-staging
+          filters:
+            branches:
+              only:
+                - master
       - deploy-production:
           requires:
             - deploy?
+          filters:
+            branches:
+              only:
+                - master
