@@ -6,8 +6,8 @@
 # Ex:
 # nameOverride: "hello-django"
 # fullnameOverride: "hello-django-awesome-app"
-nameOverride: "hello-flask"
-fullnameOverride: "hello-flask-app"
+nameOverride: "hello flask"
+fullnameOverride: "hello Flask-app"
 
 # The number of instance
 replicaCount: 1
