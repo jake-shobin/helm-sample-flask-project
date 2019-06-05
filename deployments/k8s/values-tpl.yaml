@@ -6,8 +6,8 @@
 # Ex:
 # nameOverride: "hello-django"
 # fullnameOverride: "hello-django-awesome-app"
-nameOverride: "hello flask"
-fullnameOverride: "hello Flask-app"
+nameOverride: "hello-flask{{ branch }}"
+fullnameOverride: "hello-Flask-app{{ branch }}"
 
 # The number of instance
 replicaCount: 1
@@ -38,7 +38,7 @@ healthcheck:
 # tls is enabled for HTTPS
 ingress:
   hosts:
-    - host: hello-flask.k8s.teko.vn
+    - host: hello-flask{{ branch }}.k8s.teko.vn
       paths:
         - ""
 
