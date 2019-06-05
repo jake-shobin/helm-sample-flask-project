@@ -1,0 +1,148 @@
+version: 2.1
+jobs:
+  test:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run: pip install -r requirements.txt
+      - run: pytest tests
+  
+  build-image:
+    working_directory: ~/project
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer-caching: true
+      - run:
+          name: Docker login
+          command: make docker-login
+      - run:
+          name: Build Docker image
+          command: make build-image
+      - run:
+          name: Push Image
+          command: make push-image
+  
+  deploy-feature:
+    working_directory: ~/project
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - run:
+          name: Install Make and Helm
+          command: |
+            apt-get install make
+            curl -L https://git.io/get_helm.sh | bash -s -- --version v2.13.1
+            helm init --client-only
+      - run:
+          name: Setup Kubernetes Cluster
+          command: make k8s-login-dev
+      - run:
+          name: Add Helm repo
+          command: make helm-add-repo
+      - run:
+          name: Feed values
+          command: make feed-values
+      - run:
+          name: Deploy
+          command: make helm-deploy
+  
+  deploy-staging:
+    working_directory: ~/project
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - run:
+          name: Install Make and Helm
+          command: |
+            apt-get install make
+            curl -L https://git.io/get_helm.sh | bash -s -- --version v2.13.1
+            helm init --client-only
+      - run:
+          name: Setup Kubernetes Cluster
+          command: make k8s-login-dev
+      - run:
+          name: Add Helm repo
+          command: make helm-add-repo
+      - run:
+          name: Feed values
+          command: make feed-values
+      - run:
+          name: Deploy
+          command: make helm-deploy-staging
+
+  deploy-production:
+    working_directory: ~/project
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - run:
+          name: Install Make and Helm
+          command: |
+            apt-get install make
+            curl -L https://git.io/get_helm.sh | bash -s -- --version v2.13.1
+            helm init --client-only
+      - run:
+          name: Setup Kubernetes Cluster
+          command: make k8s-login-prod
+      - run:
+          name: Add Helm repo
+          command: make helm-add-repo
+      - run:
+          name: Feed values
+          command: make feed-values
+      - run:
+          name: Deploy
+          command: make helm-deploy
+  
+workflows:
+  version: 2
+  feature-development:
+    triggers:
+      schedule:
+        filters:
+          branches:
+            only:
+              - /feature\/.*/
+    jobs:
+      - test
+      - approve?:
+          type: approval
+          requires:
+            - test
+      - build-image:
+          requires:
+            - approve?
+      - deploy-feature:
+          requires:
+            - build-image
+  
+  production:
+    triggers:
+      schedule:
+        filters:
+          branches:
+            only:
+              - master
+    jobs:
+      - test
+      - build-image:
+          requires:
+            - test
+      - deploy-staging:
+          requires:
+            - build-image
+      - deploy?:
+          type: approval
+          requires:
+            - deploy-staging
+      - deploy-production:
+          requires:
+            - deploy?
