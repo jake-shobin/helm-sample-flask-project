@@ -106,7 +106,7 @@ workflows:
   version: 2
   feature-development:
     triggers:
-      schedule:
+      - schedule:
         filters:
           branches:
             only:
@@ -126,7 +126,7 @@ workflows:
   
   production:
     triggers:
-      schedule:
+      - schedule:
         filters:
           branches:
             only:
