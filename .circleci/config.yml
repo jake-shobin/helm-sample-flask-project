@@ -110,16 +110,14 @@ workflows:
   feature-development:
     jobs:
       - test
-      - approve?:
-          type: approval
-          requires:
-            - test
-      - build-image:
-          requires:
-            - approve?
+      - build-image
       - deploy-feature:
           requires:
             - build-image
+          filters:
+            branches:
+              only:
+                - /feature\/.*/
       - deploy-staging:
           requires:
             - build-image
