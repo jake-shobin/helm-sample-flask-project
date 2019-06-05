@@ -33,12 +33,6 @@ healthcheck:
   readiness: "/"
   host: ""
 
-# K8s service configuration
-# By default, `type` is ClusterIP and it should work.
-service:
-  type: ClusterIP
-  port: 80
-
 # Ingress configuration
 # You will need to specify the `hosts` config, that then will be used by Ingress Controller to route the request to your app
 # tls is enabled for HTTPS

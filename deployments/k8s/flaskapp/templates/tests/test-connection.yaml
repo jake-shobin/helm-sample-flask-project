@@ -1,3 +1,9 @@
+{{- $serviceType := "ClusterIP" }}
+{{- $servicePort := 80 }}
+{{- if .Values.service }}
+{{- $serviceType = .Values.service.type }}
+{{- $servicePort = .Values.service.port }}
+{{- end }}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -14,5 +20,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "flaskapp.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ $serviceType }}:{{ $servicePort }}']
   restartPolicy: Never
