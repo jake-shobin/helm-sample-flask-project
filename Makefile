@@ -34,21 +34,23 @@ push-image:
 	docker image push $(IMAGE)
 
 helm-add-repo:
-	helm repo add --username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) teko $(HARBOR_SERVER)/chartrepo
+	@helm repo add --username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) teko $(HARBOR_SERVER)/chartrepo
 	helm repo update
 
 feed-values:
 	sed "s/{{ branch }}/$(BRANCH)/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
 
 helm-deploy:
-	helm upgrade $(RELEASE_NAME) teko/flaskapp -i \
+	helm upgrade $(RELEASE_NAME) teko/library/flaskapp -i \
+		--username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) \
 		--version 0.0.1 \
 		--namespace $(RELEASE_NAME) \
 		-f deployments/k8s/values.yaml \
 		--set image.tag=$(IMAGE_TAG)
 
 helm-deploy-staging:
-	helm upgrade staging-$(RELEASE_NAME) teko/flaskapp -i \
+	helm upgrade staging-$(RELEASE_NAME) teko/library/flaskapp -i \
+		--username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) \
 		--version 0.0.1 \
 		--namespace staging-$(RELEASE_NAME) \
 		-f deployments/k8s/values.yaml \
