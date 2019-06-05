@@ -18,6 +18,9 @@ jobs:
       - setup_remote_docker:
           docker_layer-caching: true
       - run:
+          name: Install Make and Helm
+          command: apt-get install make
+      - run:
           name: Docker login
           command: make docker-login
       - run:

@@ -6,6 +6,7 @@ HARBOR_SERVER := https://harbor.sample.teko.vn
 RELEASE_NAME := $(PROJECT_NAME)
 IMAGE_TAG := $(VERSION)
 BRANCH := ""
+IMAGE := $(IMAGE_REPO):$(IMAGE_TAG)
 ifdef CIRCLE_BRANCH
 	ifneq ($(CIRCLE_BRANCH), master)
 		BRANCH = $(shell echo $(CIRCLE_BRANCH) | sed 's/.*\///g' | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]')
@@ -24,7 +25,7 @@ k8s-login-prod:
 	@echo "$(PROD_KUBE_CONFIG)" | base64 --decode > $(HOME)/.kube/config
 
 docker-login:
-	@echo "$(HARBOR_USERNAME)" | docker login --username $(HARBOR_PASSWORD) --password-stdin $(HARBOR_SERVER)
+	@echo "$(HARBOR_PASSWORD)" | docker login --username $(HARBOR_USERNAME) --password-stdin $(HARBOR_SERVER)
 
 build-image:
 	docker image build -t $(IMAGE) .
