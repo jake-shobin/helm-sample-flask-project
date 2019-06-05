@@ -41,7 +41,7 @@ feed-values:
 	sed "s/{{ branch }}/$(BRANCH)/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
 	
 feed-values-staging:
-	sed "s/{{ branch }}/staging/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
+	sed "s/{{ branch }}/-staging/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
 
 helm-deploy:
 	@helm upgrade $(RELEASE_NAME) teko/library/flaskapp -i \
