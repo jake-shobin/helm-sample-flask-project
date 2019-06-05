@@ -110,7 +110,9 @@ workflows:
   feature-development:
     jobs:
       - test
-      - build-image
+      - build-image:
+          requires:
+            - test
       - deploy-feature:
           requires:
             - build-image
