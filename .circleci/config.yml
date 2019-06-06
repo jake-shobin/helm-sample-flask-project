@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer-caching: true
+          docker_layer_caching: true
       - run:
           name: Install Make and Helm
           command: apt-get install make
@@ -80,24 +80,6 @@ jobs:
           name: Deploy
           command: make helm-deploy-staging
 
-  versioning:
-    working_directory: ~/project
-    docker:
-      - image: google/cloud-sdk
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer-caching: true
-      - run:
-          name: Install Make
-          command: apt-get install make
-      - run:
-          name: Docker login
-          command: make docker-login
-      - run:
-          name: Tag Image
-          command: make tag-image
-
   deploy-production:
     working_directory: ~/project
     docker:
@@ -145,7 +127,15 @@ workflows:
             branches:
               only:
                 - master
-      - versioning:
+  deploy-production:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build-image:
           filters:
             tags:
               only: /^v.*/
@@ -156,13 +146,15 @@ workflows:
           requires:
             - versioning
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only:
-                - master
+              ignore: /.*/
       - deploy-production:
           requires:
             - deploy?
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only:
-                - master
+              ignore: /.*/

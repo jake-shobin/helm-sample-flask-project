@@ -6,13 +6,13 @@ HARBOR_SERVER := https://harbor.sample.teko.vn
 RELEASE_NAME := $(PROJECT_NAME)
 IMAGE_TAG := $(VERSION)
 BRANCH := ""
-ifdef CIRCLE_BRANCH
-	ifneq ($(CIRCLE_BRANCH), master)
-		BRANCH = $(shell echo $(CIRCLE_BRANCH) | sed 's/.*\///g' | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]')
-		RELEASE_NAME := $(shell echo $(RELEASE_NAME)-$(BRANCH) | cut -c1-30)
-		REVISION := $(shell echo $(CIRCLE_SHA1) | cut -c1-7)
-		IMAGE_TAG := dev-$(REVISION)
-	endif
+ifndef CIRCLE_TAG
+	BRANCH = $(shell echo $(CIRCLE_BRANCH) | sed 's/.*\///g' | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]')
+	RELEASE_NAME := $(shell echo $(RELEASE_NAME)-$(BRANCH) | cut -c1-30)
+	REVISION := $(shell echo $(CIRCLE_SHA1) | cut -c1-7)
+	IMAGE_TAG := build-$(REVISION)
+else
+	IMAGE_TAG := $(CIRCLE_TAG)
 endif
 IMAGE := $(IMAGE_REPO):$(IMAGE_TAG)
 
@@ -32,9 +32,6 @@ build-image:
 
 push-image:
 	docker image push $(IMAGE)
-
-tag-image:
-	docker tag $(IMAGE) $(IMAGE_REPO):$(CIRCLE_TAG)
 
 helm-add-repo:
 	@helm repo add --username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) teko $(HARBOR_SERVER)/chartrepo
