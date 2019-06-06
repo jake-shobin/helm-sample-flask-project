@@ -146,13 +146,11 @@ workflows:
               only:
                 - master
       - versioning:
-          requires:
-            - deploy-staging
           filters:
             tags:
               only: /^v.*/
-            # branches:
-            #   ignore: /.*/
+            branches:
+              ignore: /.*/
       - deploy?:
           type: approval
           requires:
