@@ -94,17 +94,17 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
         
         When a feature is developed at `feature/*` branch, it can be deployed at `<your-app>-<short-branch-name>.k8s.teko.vn`.
 
-        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/feature/README-integration-guide/docs/img/feature-feature-deployment.png)
+        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/master/docs/img/feature-feature-deployment.png)
 
         When feature is merged to `master` branch, it can be deployed to staging for UAT testing.
 
-        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/feature/README-integration-guide/docs/img/master-feature-development.png)
+        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/master/docs/img/master-feature-development.png)
       
       - `deploy-production`
         
         When a git tag is created, following [semver](https://semver.org/) convention (Ex: v0.1.1, v1.2.0...), your app is ready to deploy on production environment.
-        
-        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/feature/README-integration-guide/docs/img/tag-deploy-production.png)
+
+        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/master/docs/img/tag-deploy-production.png)
   
   3. Configure CirleCI environments
 
