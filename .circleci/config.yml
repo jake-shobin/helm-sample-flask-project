@@ -136,6 +136,8 @@ workflows:
             branches:
               ignore: /.*/
       - build-image:
+          requires:
+            - test
           filters:
             tags:
               only: /^v.*/
