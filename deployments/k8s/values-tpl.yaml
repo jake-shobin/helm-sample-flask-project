@@ -101,22 +101,14 @@ autoscaling:
 
 
 # Your app's secrets
-secrets: []
-  # - name: db-url
-  #   value: <database url here>
+secrets:
+  db-url: sqlite:///
 
 # Your app's env vars
 # A env var could be a string value, or a value from secret
-environmentVariables: []
-  # - name: FLASK_CONFIG
-  #   value: "production"
-  # - name: DATABASE_URL
-  #   valueFromSecret: db-url
+environmentVariables:
+  - name: FLASK_CONFIG
+    value: "production"
+  - name: DATABASE_URL
+    valueFromSecret: db-url
 
-
-# Database migration step
-# It will be executed after your app installed or upgraded
-migration:
-  enabled: false
-  command: |
-    ["/bin/sh", "-c", "flask db upgrade"]

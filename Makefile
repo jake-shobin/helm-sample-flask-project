@@ -33,6 +33,9 @@ build-image:
 push-image:
 	docker image push $(IMAGE)
 
+tag-image:
+	docker tag $(IMAGE) $(IMAGE_REPO):$(CIRCLE_TAG)
+
 helm-add-repo:
 	@helm repo add --username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) teko $(HARBOR_SERVER)/chartrepo
 	helm repo update
