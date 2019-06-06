@@ -4,9 +4,14 @@ jobs:
     working_directory: ~/project
     docker:
       - image: circleci/python:3.7
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
     steps:
       - checkout
-      - run: pip install -r requirements.txt
+      - run:
+          command: |
+            sudo pip install pipenv
+            pipenv install -r requirements.txt
       - run: pytest tests
   
   build-image:
