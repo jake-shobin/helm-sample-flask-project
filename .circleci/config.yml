@@ -144,7 +144,7 @@ workflows:
       - deploy?:
           type: approval
           requires:
-            - versioning
+            - build-image
           filters:
             tags:
               only: /^v.*/
