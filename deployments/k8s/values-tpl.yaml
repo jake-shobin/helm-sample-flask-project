@@ -2,10 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# Your app name (without space)
-# Ex:
-# nameOverride: "hello-django"
-# fullnameOverride: "hello-django-awesome-app"
+# Your app name
+# nameOverride: "hello-flask"
+# fullnameOverride: "hello-flask-awesome-app"
 nameOverride: "hello-flask{{ branch }}"
 fullnameOverride: "hello-Flask-app{{ branch }}"
 

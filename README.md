@@ -16,9 +16,9 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
 
 ### Edit your values.yaml
 
-  A helm chart is created to simplify deployment: https://github.com/teko-vn/helm-charts/tree/master/flaskapp. Just copy [values.yaml](https://github.com/teko-vn/helm-charts/blob/master/flaskapp/values.yaml) then edit its values to your own
+  A helm chart is created to simplify deployment: https://github.com/teko-vn/helm-charts/tree/master/flaskapp. Just copy [values.yaml](https://github.com/teko-vn/helm-charts/blob/master/flaskapp/values.yaml) then edit its values to your own values.
   
-  In this repo, [values-tpl.yaml](https://github.com/teko-vn/helm-sample-projects/blob/master/deployments/k8s/values-tpl.yaml) is used with a placeholder (`{{ branch }}`). This placeholder will be replaced to deploy your app in different environments.
+  In this repo, [values-tpl.yaml](https://github.com/teko-vn/helm-sample-projects/blob/master/deployments/k8s/values-tpl.yaml) is used with a placeholder `{{ branch }}`. This placeholder will be replaced to deploy your app in different environments.
 
 1. `nameOverride`, `fullnameOverride`: Your app name in short and long description. You need to provide both.
 
@@ -26,7 +26,7 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
 
 3. `image`: Docker Image config
 	- `registry`: Docker image registry. Ex: gcr.io (Google Cloud Container Registry), docker.io (Docker Hub), hub.k8s.teko.vn (Teko Harbor). If you leave this empty, Docker Hub will be used.
-	- `repository`: The path your Docker image. Ex: hello-flask/hell-flask
+	- `repository`: The path your Docker image. Ex: `hello-flask/hell-flask`
 	- `tag`: The image tag. Ex: 1.0.0, 1.2.0...
 	- `port`: The container's port.
 	- `pullPolicy`: Image pull policy. Ex: `Always`, `IfNotPresent`
@@ -94,11 +94,18 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
         
         When a feature is developed at `feature/*` branch, it can be deployed at `<your-app>-<short-branch-name>.k8s.teko.vn`.
 
+        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/feature/README-integration-guide/docs/img/feature-feature-deployment.png)
+
         When feature is merged to `master` branch, it can be deployed to staging for UAT testing.
+
+        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/feature/README-integration-guide/docs/img/master-feature-development.png)
       
       - `deploy-production`
         
         When a git tag is created, following [semver](https://semver.org/) convention (Ex: v0.1.1, v1.2.0...), your app is ready to deploy on production environment.
+        
+        ![](https://raw.githubusercontent.com/teko-vn/helm-sample-projects/feature/README-integration-guide/docs/img/tag-deploy-production.png)
+  
   3. Configure CirleCI environments
 
       Some environment variables is required to configure at your project CircleCI settings. These values must be **base64 encoded**.
