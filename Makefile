@@ -1,5 +1,4 @@
 PROJECT_NAME := hello-flask
-VERSION := 0.0.1
 IMAGE_REPO := hub.k8s.teko.vn/hello-flask/hello-flask
 HARBOR_SERVER := https://hub.k8s.teko.vn
 
