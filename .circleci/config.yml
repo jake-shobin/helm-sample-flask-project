@@ -12,7 +12,7 @@ jobs:
           command: |
             sudo pip install pipenv
             pipenv install -r requirements.txt
-      - run: pytest tests
+      - run: pipenv run pytest tests
   
   build-image:
     working_directory: ~/project
