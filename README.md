@@ -32,6 +32,7 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
 	- `tag`: The image tag. Ex: 1.0.0, 1.2.0...
 	- `port`: The container's port.
 	- `pullPolicy`: Image pull policy. Ex: `Always`, `IfNotPresent`
+  - `dockerConfig`: docker config json file. The file can be found at $HOME/.docker/config.json after you login to the registry by calling `docker login <registry>`
 
 4. `healthcheck`: Health-check
 	- `enabled`: `true` to enable heath-check.
