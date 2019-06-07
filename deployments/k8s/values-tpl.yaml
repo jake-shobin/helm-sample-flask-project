@@ -19,7 +19,7 @@ replicaCount: 1
 #     in Google Cloud Registry: https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
 #     in Docker Hub: execute command `docker login`
 image:
-  registry: harbor.sample.teko.vn
+  registry: hub.k8s.teko.vn
   repository: hello-flask/hello-flask
   tag: dev-f8f342c
   port: 5000
