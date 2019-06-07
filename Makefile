@@ -37,7 +37,7 @@ helm-add-repo:
 	helm repo update
 
 feed-values:
-	sed "s/{{ branch }}/$(BRANCH)/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
+	sed "s/{{ branch }}/-$(BRANCH)/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
 	
 feed-values-staging:
 	sed "s/{{ branch }}/-staging/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
