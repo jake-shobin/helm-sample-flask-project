@@ -18,7 +18,8 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
 
   A helm chart is created to simplify deployment: https://github.com/teko-vn/helm-charts/tree/master/flaskapp. Just copy [values.yaml](https://github.com/teko-vn/helm-charts/blob/master/flaskapp/values.yaml) then edit its values to your own values.
   
-  In this repo, [values-tpl.yaml](https://github.com/teko-vn/helm-sample-projects/blob/master/deployments/k8s/values-tpl.yaml) is used with a placeholder `{{ branch }}`. This placeholder will be replaced to deploy your app in different environments.
+  > **NOTE**: In this repo, [values-tpl.yaml](https://github.com/teko-vn/helm-sample-projects/blob/master/deployments/k8s/values-tpl.yaml) is used with a placeholder `{{ branch }}`. This placeholder will be replaced to deploy your app in different environments.
+  The file is placed at `<project_root>/deployments/k8s/` directory to work with Makefile in CI configuration
 
 1. `nameOverride`, `fullnameOverride`: Your app name in short and long description. You need to provide both.
 
@@ -76,6 +77,7 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
   Sample CircleCI configuration file at [config.yml](https://github.com/teko-vn/helm-sample-projects/blob/master/.circleci/config.yml).
   A [Makefile](https://github.com/teko-vn/helm-sample-projects/blob/master/Makefile) is created for some commands.
   You can edit these files to suit your needs.
+  > **NOTE**: The values file (`values-tpl.yaml`) edited in previous step should be placed at `<project_root>/deployments/k8s/` directory to work with Makefile.
   
   1. Makefile
 
