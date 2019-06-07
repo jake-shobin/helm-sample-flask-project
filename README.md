@@ -17,7 +17,7 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
 ### Edit your values.yaml
 
   A helm chart is created to simplify deployment: https://github.com/teko-vn/helm-charts/tree/master/flaskapp.
-  Just copy [values-tpl.yaml](https://github.com/teko-vn/helm-sample-projects/blob/master/deployments/k8s/values-tpl.yaml) then edit its values to your own values.
+  Just copy [values.yaml](https://github.com/teko-vn/helm-charts/blob/master/flaskapp/values.yaml) then edit its values to your own values.
   
   > **NOTE**: In this repo, [values-tpl.yaml](https://github.com/teko-vn/helm-sample-projects/blob/master/deployments/k8s/values-tpl.yaml) is used with a placeholder `{{ branch }}`. This placeholder will be replaced to deploy your app in different environments.
   The file is placed at `<project_root>/deployments/k8s/` directory to work with Makefile in CI configuration
