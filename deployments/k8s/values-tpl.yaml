@@ -22,7 +22,7 @@ image:
   repository: hello-flask/hello-flask
   tag: 0.0.1
   port: 5000
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   dockerConfig: #
 
 # Your app health check.
@@ -52,9 +52,18 @@ environmentVariables:
     value: "production"
   - name: DATABASE_URL
     valueFromSecret: db-url
+  - name: REDIS_URL
+    value: "redis://redis-master:6379"
 
+
+# Enable redis if you are using redis pubsub
+#  by settings enabled: true
+#  You must leave other values as default
+# NOTE: redis is used as pubsub only, without persistence
+# The redis service url will be: redis://redis-master:6379
 redis:
   enabled: true
+
   nameOverride: redis
   fullnameOverride: redis
   cluster:
@@ -62,3 +71,12 @@ redis:
   master:
     persistence:
       enabled: false
+
+# Enable celery if you are using celery worker and beat
+# You must supply commands for celery worker and beat
+celery:
+  enabled: true
+  workerCount: 2
+  workerCommand: |-
+    ["/bin/sh", "-c", "celery -A app:celery worker -l info --without-gossip --without-mingle --without-heartbeat"]
+  beatCommand: #
