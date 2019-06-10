@@ -1,10 +1,11 @@
 # Sample Flask project deploying on Kubernetes
 This repository is a sample python Flask app, that can be deployed on Kubernetes using CircleCI.
 You can use this project as a template to deploy your app on Teko Kubernetes cluster, CI/CD pipeline with CircleCI.
-[x] Flask application
-[x] CI/CD using CircleCI
-[x] Celery
-[x] Redis pubsub 
+
+- [x] Flask application
+- [x] CI/CD using CircleCI
+- [x] Celery
+- [x] Redis pubsub 
 
 ## Integration Guide
 In order to deploy your app on Kubernetes, some basic knowledge about Kubernetes and Docker is required.
