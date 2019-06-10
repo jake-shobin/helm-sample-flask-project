@@ -14,8 +14,8 @@ replicaCount: 1
 
 # You app image
 # If the image is stored in a private registry,
-#   you will need to specify pullSecret and credentialDockerConfig
-#   credentialDockerConfig is Docker config file after you login to your registry, which is in ~/.docker/config.json by default
+#   you will need to specify pullSecret and dockerConfig
+#   dockerConfig is Docker config file after you login to your registry, which is in ~/.docker/config.json by default
 #     in Google Cloud Registry: https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
 #     in Docker Hub: execute command `docker login`
 image:
@@ -24,7 +24,6 @@ image:
   # tag: "1.0"
   # port: 5000
   # pullPolicy: IfNotPresent
-  # pullSecret: # 
   # dockerConfig: #
   # command: #
 
@@ -46,9 +45,9 @@ hosts: []
 
 # Your app's secrets
 # Edit here then remove `[]`
-secrets: []
-  # - name: db-url
-  #   value: <database url here>
+secrets:
+  # key: value
+  # key: value
 
 # Your app's env vars
 # A env var could be a string value, or a value from secret
@@ -57,13 +56,10 @@ environmentVariables: []
   # - name: FLASK_CONFIG
   #   value: "production"
   # - name: DATABASE_URL
-  #   valueFromSecret: db-url
-
-
-# Database migration step
-# It will be executed after your app installed or upgraded
-# Flask-Migrate is required
-migration:
-  enabled: false
-  command: |
-    ["/bin/sh", "-c", "flask db upgrade"]
+  #   valueFromSecret: key
+ 
+celery:
+  enabled: False
+  workerCount: 1
+  workerCommand: #
+  beatCommand: #

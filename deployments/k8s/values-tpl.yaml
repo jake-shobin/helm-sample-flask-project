@@ -13,9 +13,8 @@ replicaCount: 1
 
 # You app image
 # If the image is stored in a private registry,
-#   you will need to specify pullSecret and credentialDockerConfig
-#   pullSecret is name of secret. You can name it to whatever you want, eg: regcred
-#   credentialDockerConfig is Docker config file after you login to your registry, which is in ~/.docker/config.json by default
+#   you will need to specify dockerConfig
+#   dockerConfig is Docker config file after you login to your registry, which is in ~/.docker/config.json by default
 #     in Google Cloud Registry: https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
 #     in Docker Hub: execute command `docker login`
 image:
@@ -54,3 +53,10 @@ environmentVariables:
   - name: DATABASE_URL
     valueFromSecret: db-url
 
+redis:
+  enabled: true
+  cluster:
+    enabled: false
+  master:
+    persistence:
+      enabled: false

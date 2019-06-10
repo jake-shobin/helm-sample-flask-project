@@ -21,7 +21,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: app
           image: {{ template "flaskapp.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -71,9 +71,9 @@ spec:
       initContainers:
         {{ tpl .Values.initContainers . | nindent 8 }}
       {{- end }}
-      {{- if .Values.image.pullSecret }}
+      {{- if .Values.image.dockerConfig }}
       imagePullSecrets:
-        - name: {{ .Values.image.pullSecret }}
+        - name: {{ include "flaskapp.name" . }}-regcred
       {{- end }}
       {{- if .Values.volumes }}
       volumes:

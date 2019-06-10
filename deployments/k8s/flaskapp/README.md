@@ -24,7 +24,7 @@ This chart simplifies deployment of a Flask app in Kubernetes.
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm install --name my-release stable/python-flask
+$ helm install --name my-release teko/library/flaskapp
 ```
 
 > **Tip**: List all releases using `helm list`
@@ -45,44 +45,31 @@ The following table lists the configurable parameters of the flask app chart and
 
 |             Parameter                     |                     Description                     |                              Default                              |
 |-------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------|
+| `image.registry`                          | Your app Image registry. Ex: gcr.io, docker.io      | `nil`                                                             |
 | `image.repository`                        | Your app Image name                                 | `nil`                                                             |
-| `image.tag`                               | MariaDB Image tag                                   | `{VERSION}`                                                       |
-| `image.pullPolicy`                        | MariaDB image pull policy                           | `Always` if `imageTag` is `latest`, else `IfNotPresent`           |
-| `image.pullSecrets`                       | Specify docker-registry secret names as an array    | `[]` (does not add image pull secrets to deployed pods)           |
-| `image.credentialDockerConfig`            | Docker config used to create image pull secret      | `nil`                                                             |
+| `image.tag`                               | Your app Image tag                                  | `{VERSION}`                                                       |
+| `image.pullPolicy`                        | Your app image pull policy                          | `Always` if `imageTag` is `latest`, else `IfNotPresent`           |
+| `image.dockerConfig`                      | Docker config used to create image pull secret      | `nil`                                                             |
+| `image.command`                           | The command to run container from image             | `nil`                                                             |
 | `liveness`                                | Liveness check with a HTTP GET URL                  | `/`                                                               |
 | `readiness`                               | Readiness check with a HTTP GET URL                 | `/`                                                               |
-| `service.type`                            | Kubernetes service type                             | `ClusterIP`                                                       |
-| `service.port`                            | Service port                                        | `80`                                                              |
-| `ingress.hosts`                           | An array of hosts configuration for ingress         | `[]`                                                              |
-| `ingress.tls`                             | TLS for ingress                                     | `[]` (does not use TLS)                                           |
-| `volumes`                                 | Volumes                                             | `nil` (no volumes used)                                           |
-| `volumeMounts`                            | Mount volumes                                       | `nil`                                                             |
-| `resources`                               | Resource limitation                                 | `{}`                                                              |
-| `autoscaling`                             | HorizontalPodAutoscaler for the Deployment          | `{}`                                                              |
-| `autoscaling.enable`                      | Enable autoscaling                                  | `false`                                                           |
-| `nodeSelector`                            | Node selector                                       | `{}`                                                              |
-| `tolerations`                             | tolerations                                         | `{}`                                                              |
-| `affinity`                                | affinity                                            | `{}`                                                              |
-| `secrets`                                 | Your app secrets                                    | `[]`                                                              |
+| `hosts`                                   | An array of hosts configuration for ingress         | `[]`                                                              |
+| `secrets`                                 | Your app secrets                                    | `{}`                                                              |
 | `environmentVariables`                    | Environment variables                               | `[]`                                                              |
-| `migration.enable`                        | Enable db migration. Note: Flask-Migration is required to use db migration | `false`                                    |
-| `migration.command`                       | Command to migrate db. It must be a string          | `nil`                                                             |
-| `migration.environmentVariables`          | Environment variables                               | Environment variables used for run migration container            |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```bash
 $ helm install --name my-release \
-  --set image.repository=gcr.io/teko/example-flask-app \
-    stable/python-flask
+  --set image.tag=1.0.0 \
+    teko/library/flaskapp
 ```
 
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```bash
-$ helm install --name my-release -f values.yaml stable/python-flask
+$ helm install --name my-release -f values.yaml teko/library/flaskapp
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)

@@ -13,7 +13,7 @@ metadata:
     # certmanager.k8s.io/acme-http01-edit-in-place: "true"
 spec:
   rules:
-  {{- range .Values.ingress.hosts }}
+  {{- range .Values.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
