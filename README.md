@@ -116,9 +116,9 @@ The template uses [helm](https://helm.sh) to simplify the deployment.
   
   3. Configure CirleCI environments
 
-      Some environment variables is required to configure at your project CircleCI settings. These values must be **base64 encoded**.
+      Some environment variables is required to configure at your project CircleCI settings.
 
-      - `DEV_KUBE_CONFIG`: kubectl config file for k8s development cluster.
-      - `PROD_KUBE_CONFIG`: kubectl config file for k8s production cluster.
+      - `DEV_KUBE_CONFIG`: kubectl config file for k8s development cluster. This value must be **base64 encoded**.
+      - `PROD_KUBE_CONFIG`: kubectl config file for k8s production cluster. This value must be **base64 encoded**.
       - `HARBOR_USERNAME`: [Harbor](https://hub.k8s.teko.vn) username, which is needed to use Teko Harbor for image registry and `flaskapp` helm chart.
       - `HARBOR_PASSWORD`: [Harbor](https://hub.k8s.teko.vn) password, which is needed to use Teko Harbor for image registry and `flaskapp` helm chart.
