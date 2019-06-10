@@ -34,7 +34,7 @@ push-image:
 	docker image push $(IMAGE)
 
 helm-add-repo:
-	@helm repo add --username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) teko $(HARBOR_SERVER)/chartrepo/library
+	@helm repo add --username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) teko $(HARBOR_SERVER)/chartrepo/incubator
 	helm repo update
 
 feed-values:
