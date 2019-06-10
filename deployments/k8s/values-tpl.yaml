@@ -37,7 +37,7 @@ healthcheck:
 # You can route the request based on domain or uri path
 # https://kubernetes.io/docs/concepts/services-networking/ingress/#types-of-ingress
 hosts:
-  - host: hello-flask{{branch}}.k8s.teko.vn
+  - host: hello-flask{{ branch }}.k8s.teko.vn
     paths:
       - ""
 
@@ -55,6 +55,8 @@ environmentVariables:
 
 redis:
   enabled: true
+  nameOverride: redis
+  fullnameOverride: redis
   cluster:
     enabled: false
   master:

@@ -14,7 +14,7 @@ else
 	IMAGE_TAG := $(CIRCLE_TAG)
 endif
 IMAGE := $(IMAGE_REPO):$(IMAGE_TAG)
-CHART_VERSION := "0.0.2-dev"
+CHART_VERSION := "0.0.2"
 
 k8s-login-dev:
 	@mkdir -p $(HOME)/.kube
