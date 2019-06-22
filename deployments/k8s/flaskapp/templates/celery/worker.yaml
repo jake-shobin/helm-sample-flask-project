@@ -1,0 +1,38 @@
+
+{{- if .Values.celery.enabled }}
+
+{{- if .Values.celery.workerCommand }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "flaskapp.fullname" . }}-celery-worker
+  labels:
+    app.kubernetes.io/name: {{ include "flaskapp.name" . }}
+    helm.sh/chart: {{ include "flaskapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.celery.workerCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "flaskapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "flaskapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: celery-worker
+          image: {{ template "flaskapp.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.image.port }}
+              protocol: TCP
+          command: {{ tpl .Values.celery.workerCommand . }}
+          {{- include "flaskapp.env" . | nindent 10 -}}
+      {{- include "flaskapp.imagePullSecrets" . | nindent 8 }}
+{{- end }}
+{{- end }}

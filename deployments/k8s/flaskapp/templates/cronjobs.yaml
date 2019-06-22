@@ -1,0 +1,20 @@
+{{- if .Values.jobs }}
+{{- range .Values.jobs }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .name }}
+spec:
+  schedule: {{ .schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ .name }}
+            image: {{ .image }}
+            command: {{ tpl .command . }}
+          restartPolicy: OnFailure
+
+{{- end }}
+{{- end }}

@@ -45,3 +45,35 @@ Return the proper flaskapp image name
 {{- printf "%s:%s" $repositoryName $tag -}}
 {{- end -}}
 {{- end -}}
+
+
+{{- define "flaskapp.secretName" -}}
+{{- include "flaskapp.name" . -}}
+{{- end -}}
+
+{{- define "flaskapp.pullSecret" -}}
+{{- printf "%s-regcred" (include "flaskapp.name" .) -}}
+{{- end -}}
+
+{{- define "flaskapp.imagePullSecrets" -}}
+{{- if .Values.image.dockerConfig }}
+imagePullSecrets:
+  - {{ include "flaskapp.pullSecret" . }}
+{{- end -}}
+{{- end -}}
+
+{{- define "flaskapp.env" -}}
+{{- $secretName := include "flaskapp.secretName" . }}
+env:
+  {{- range $name, $value := .Values.env }}
+  - name: {{ $name }}
+    value: {{ $value | quote }}
+  {{ end }}
+  {{ range $name, $key := .Values.envFromSecret }}
+  - name: {{ $name }}
+    valueFrom:
+      secretKeyRef:
+        name: {{ $secretName }}
+        key: {{ $key }}
+  {{ end }}
+{{- end -}}

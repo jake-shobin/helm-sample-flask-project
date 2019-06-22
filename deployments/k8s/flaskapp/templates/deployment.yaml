@@ -20,6 +20,7 @@ spec:
         app.kubernetes.io/name: {{ include "flaskapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      {{- include "flaskapp.imagePullSecrets" . | nindent 6 }}
       containers:
         - name: app
           image: {{ template "flaskapp.image" . }}
@@ -28,24 +29,11 @@ spec:
             - name: http
               containerPort: {{ .Values.image.port }}
               protocol: TCP
-          {{- if .Values.image.command }}
-          command: {{ tpl .Values.image.command . }}
-          {{- end }}
-          {{- if .Values.environmentVariables }}
-          env:
-          {{- range .Values.environmentVariables }}
-            - name: {{ .name }}
-              {{- if .value }}
-              value: "{{ .value }}"
-              {{- end }}
-              {{- if .valueFromSecret }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $secretName }}
-                  key: {{ .valueFromSecret }}
-              {{- end }}
-          {{- end }}
-          {{- end }}
+          command: 
+            {{- toYaml .Values.image.command | nindent 12 -}}
+
+          {{- include "flaskapp.env" . | nindent 10 -}}
+          
           {{- if .Values.healthcheck.enabled }}
           livenessProbe:
             httpGet:
@@ -71,122 +59,7 @@ spec:
       initContainers:
         {{ tpl .Values.initContainers . | nindent 8 }}
       {{- end }}
-      {{- if .Values.image.dockerConfig }}
-      imagePullSecrets:
-        - name: {{ include "flaskapp.name" . }}-regcred
-      {{- end }}
       {{- if .Values.volumes }}
       volumes:
         {{ tpl .Values.volumes . | nindent 8 }}
       {{- end }}
-
----
-
-{{- if .Values.celery.enabled }}
-
-{{- if .Values.celery.workerCommand }}
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "flaskapp.fullname" . }}-celery-worker
-  labels:
-    app.kubernetes.io/name: {{ include "flaskapp.name" . }}
-    helm.sh/chart: {{ include "flaskapp.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-spec:
-  replicas: {{ .Values.celery.workerCount }}
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "flaskapp.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: {{ include "flaskapp.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-    spec:
-      containers:
-        - name: celery-worker
-          image: {{ template "flaskapp.image" . }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.image.port }}
-              protocol: TCP
-          command: {{ tpl .Values.celery.workerCommand . }}
-          {{- if .Values.environmentVariables }}
-          env:
-          {{- range .Values.environmentVariables }}
-            - name: {{ .name }}
-              {{- if .value }}
-              value: "{{ .value }}"
-              {{- end }}
-              {{- if .valueFromSecret }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $secretName }}
-                  key: {{ .valueFromSecret }}
-              {{- end }}
-          {{- end }}
-          {{- end }}
-      {{- if .Values.image.dockerConfig }}
-      imagePullSecrets:
-        - name: {{ include "flaskapp.name" . }}-regcred
-      {{- end }}
-{{- end }}
----
-
-{{- if .Values.celery.beatCommand }}
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "flaskapp.fullname" . }}-celery-beat
-  labels:
-    app.kubernetes.io/name: {{ include "flaskapp.name" . }}
-    helm.sh/chart: {{ include "flaskapp.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "flaskapp.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: {{ include "flaskapp.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-    spec:
-      containers:
-        - name: celery-beat
-          image: {{ template "flaskapp.image" . }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.image.port }}
-              protocol: TCP
-          command: {{ tpl .Values.celery.beatCommand . }}
-          {{- if .Values.environmentVariables }}
-          env:
-          {{- range .Values.environmentVariables }}
-            - name: {{ .name }}
-              {{- if .value }}
-              value: "{{ .value }}"
-              {{- end }}
-              {{- if .valueFromSecret }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $secretName }}
-                  key: {{ .valueFromSecret }}
-              {{- end }}
-          {{- end }}
-          {{- end }}
-      {{- if .Values.image.dockerConfig }}
-      imagePullSecrets:
-        - name: {{ include "flaskapp.name" . }}-regcred
-      {{- end }}
-{{- end }}
-
-{{- end }}

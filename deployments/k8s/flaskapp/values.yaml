@@ -44,19 +44,19 @@ hosts: []
   #     - ""
 
 # Your app's secrets
-# Edit here then remove `[]`
+# Edit here then remove
 secrets:
-  # key: value
-  # key: value
+  # db-url: sqlite:///app.db
+  # secret-key: "something-very-secret"
 
 # Your app's env vars
 # A env var could be a string value, or a value from secret
-# Edit here then remove `[]`
-environmentVariables: []
-  # - name: FLASK_CONFIG
-  #   value: "production"
-  # - name: DATABASE_URL
-  #   valueFromSecret: key
+env:
+  # FLASK_CONFIG: "production"
+
+envFromSecret:
+  # SECRET_KEY: secret-key
+  # DATABASE_URL: db-url
  
 celery:
   enabled: False
