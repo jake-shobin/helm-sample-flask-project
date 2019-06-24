@@ -18,11 +18,11 @@ CHART_VERSION := "0.0.2"
 
 k8s-login-dev:
 	@mkdir -p $(HOME)/.kube
-	@echo "$(DEV_KUBE_CONFIG)" | base64 --decode > $(HOME)/.kube/config
+	@echo "$(KUBECONFIG_CONTENT)" | base64 --decode > $(HOME)/.kube/config
 
 k8s-login-prod:
 	@mkdir -p $(HOME)/.kube
-	@echo "$(PROD_KUBE_CONFIG)" | base64 --decode > $(HOME)/.kube/config
+	@echo "$(KUBECONFIG_CONTENT)" | base64 --decode > $(HOME)/.kube/config
 
 docker-login:
 	@echo "$(HARBOR_PASSWORD)" | docker login --username $(HARBOR_USERNAME) --password-stdin $(HARBOR_SERVER)
