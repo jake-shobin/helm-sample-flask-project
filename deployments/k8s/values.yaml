@@ -8,8 +8,7 @@
 nameOverride: "hello-flask"
 fullnameOverride: "hello-Flask-app"
 
-# The number of instance
-replicaCount: 1
+
 
 # You app image
 # If the image is stored in a private registry,
@@ -21,7 +20,7 @@ image:
   registry: hub.teko.vn
   repository: hello-flask/hello-flask
   tag: build-438aeb5
-  port: 5000
+
   pullPolicy: IfNotPresent
   dockerConfig: |-
     {
@@ -31,17 +30,24 @@ image:
         }
       }
     }
-  # command: ["/bin/sh", "-c", "run"]
+  
 
-# Your app health check.
-healthcheck:
-  enabled: true
-  liveness: "/"
-  readiness: "/"
-  host: ""
+app:
+  # The number of instance
+  replicaCount: 1
 
-autoscaling:
-  enabled: true
+  command: ["/bin/sh", "-c", "run"]
+  port: 5000
+
+  # Your app health check.
+  healthcheck:
+    enabled: true
+    liveness: "/"
+    readiness: "/"
+    host: ""
+
+  autoscaling:
+    enabled: true
 
 # Ingress configuration
 # HTTPS is auto-enabled
@@ -95,8 +101,8 @@ celery:
   workerCommand: ["/bin/sh", "-c", "celery -A app:celery worker -l info --without-gossip --without-mingle --without-heartbeat"]
   beatCommand: #
 
-# jobs:
-#   - name: #
-#     command: #
-#     image: #
-#     schedule: "*/1 * * * *"
+jobs: []
+  # - name: #
+  #   image: #
+  #   command: #
+  #   schedule: "*/1 * * * *"

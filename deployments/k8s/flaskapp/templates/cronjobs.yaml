@@ -1,11 +1,13 @@
 {{- if .Values.jobs }}
+{{- $defaultImage := include "flaskapp.image" . }}
+{{- $labels := include "flaskapp.labels" . }}
 {{- range .Values.jobs }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: {{ .name }}
   labels:
-    {{- include "flaskapp.labels" . | nindent 4 }}
+    {{- $labels | nindent 4 }}
     app.kubernetes.io/component: cronjob
 spec:
   schedule: {{ .schedule }}
@@ -15,8 +17,13 @@ spec:
         spec:
           containers:
           - name: {{ .name }}
+            {{- if .image }}
             image: {{ .image }}
-            command: {{ toYaml .command }}
+            {{- else }}
+            image: {{ $defaultImage }}
+            {{- end }}
+            command:
+              {{- toYaml .command | nindent 14 }}
           restartPolicy: OnFailure
 
 {{- end }}

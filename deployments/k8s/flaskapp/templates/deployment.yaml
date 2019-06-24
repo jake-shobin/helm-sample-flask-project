@@ -26,21 +26,21 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.image.port }}
+              containerPort: {{ .Values.app.port }}
               protocol: TCP
-          {{- if .Values.image.command }}
+          {{- if .Values.app.command }}
           command: 
-            {{- toYaml .Values.image.command | nindent 12 -}}
+            {{- toYaml .Values.app.command | nindent 12 -}}
           {{- end -}}
           {{- include "flaskapp.env" . | nindent 10 -}}
-          {{- if .Values.healthcheck.enabled }}
+          {{- if .Values.app.healthcheck.enabled }}
           livenessProbe:
             httpGet:
-              path: {{ .Values.healthcheck.liveness }}
+              path: {{ .Values.app.healthcheck.liveness }}
               port: http
           readinessProbe:
             httpGet:
-              path: {{ .Values.healthcheck.readiness }}
+              path: {{ .Values.app.healthcheck.readiness }}
               port: http
           {{- end }}
           {{- if .Values.resources }}
