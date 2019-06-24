@@ -95,10 +95,16 @@ redis:
 # Enable celery if you are using celery worker and beat
 # You must supply commands for celery worker and beat
 celery:
-  enabled: true
-  workerCount: 2
-  workerCommand: ["/bin/sh", "-c", "celery -A app:celery worker -l info --without-gossip --without-mingle --without-heartbeat"]
-  beatCommand: null
+  worker:
+    enabled: true
+    replicaCount: 2
+    port: 5000
+    command: ["/bin/sh", "-c", "celery -A app:celery worker -l info --without-gossip --without-mingle --without-heartbeat"]
+  
+  beat:
+    enabled: false
+    port: 5000
+    command: []
 
 jobs: []
   # - name: #

@@ -1,7 +1,5 @@
 
-{{- if .Values.celery.enabled }}
-
-{{- if .Values.celery.workerCommand }}
+{{- if .Values.celery.worker.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,11 +26,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.image.port }}
+              containerPort: {{ .Values.celery.worker.port }}
               protocol: TCP
           command: 
-            {{- toYaml .Values.celery.workerCommand | nindent 12 -}}
+            {{- toYaml .Values.celery.worker.command | nindent 12 -}}
           {{- include "flaskapp.env" . | nindent 10 -}}
       {{- include "flaskapp.imagePullSecrets" . | nindent 6 }}
-{{- end }}
 {{- end }}

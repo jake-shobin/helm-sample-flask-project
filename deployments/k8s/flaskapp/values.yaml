@@ -86,10 +86,16 @@ envFromSecret:
   # DATABASE_URL: db-url
  
 celery:
-  enabled: False
-  workerCount: 1
-  workerCommand: null
-  beatCommand: null
+  worker:
+    enabled: false
+    replicaCount: 1
+    port: 5000
+    command: []
+  
+  beat:
+    enabled: false
+    port: 5000
+    command: []
 
 jobs: []
   # - name: "a job"
