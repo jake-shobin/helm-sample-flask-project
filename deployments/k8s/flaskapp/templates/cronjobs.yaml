@@ -4,6 +4,9 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: {{ .name }}
+  labels:
+    {{- include "flaskapp.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cronjob
 spec:
   schedule: {{ .schedule }}
   jobTemplate:
@@ -13,7 +16,7 @@ spec:
           containers:
           - name: {{ .name }}
             image: {{ .image }}
-            command: {{ tpl .command . }}
+            command: {{ toYaml .command }}
           restartPolicy: OnFailure
 
 {{- end }}

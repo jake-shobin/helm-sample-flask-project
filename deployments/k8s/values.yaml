@@ -5,8 +5,8 @@
 # Your app name
 # nameOverride: "hello-flask"
 # fullnameOverride: "hello-flask-awesome-app"
-nameOverride: "hello-flask{{ branch }}"
-fullnameOverride: "hello-Flask-app{{ branch }}"
+nameOverride: "hello-flask"
+fullnameOverride: "hello-Flask-app"
 
 # The number of instance
 replicaCount: 1
@@ -18,13 +18,20 @@ replicaCount: 1
 #     in Google Cloud Registry: https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
 #     in Docker Hub: execute command `docker login`
 image:
-  registry: hub.k8s.teko.vn
+  registry: hub.teko.vn
   repository: hello-flask/hello-flask
   tag: 0.0.1
   port: 5000
   pullPolicy: IfNotPresent
-  dockerConfig: blabla
-  command: ["/bin/sh", "-c", "run"]
+  dockerConfig: |-
+    {
+      "auths": {
+        "hub.teko.vn": {
+          "auth": "ZHVuZy5ueDpJPDNSdWFDb24="
+        }
+      }
+    }
+  # command: ["/bin/sh", "-c", "run"]
 
 # Your app health check.
 healthcheck:
@@ -41,13 +48,14 @@ ingress:
   annotations: {}
     # nginx.ingress.kubernetes.io/rewrite-target: /
   hosts:
-    - host: hello-flask{{ branch }}.k8s.teko.vn
+    - host: hello-flask.k8s.teko.vn
       paths:
         - ""
 
 # Your app's secrets
 secrets:
   db-url: sqlite:///
+  secret-key: "abc123"
 
 
 # Your app's env vars
@@ -57,7 +65,7 @@ env:
   REDIS_URL: "redis://redis-master:6379"
 
 envFromSecret:
-  # SECRET_KEY: secret-key
+  SECRET_KEY: secret-key
   DATABASE_URL: db-url
 
 # Enable redis if you are using redis pubsub
@@ -81,8 +89,7 @@ redis:
 celery:
   enabled: true
   workerCount: 2
-  workerCommand: |-
-    ["/bin/sh", "-c", "celery -A app:celery worker -l info --without-gossip --without-mingle --without-heartbeat"]
+  workerCommand: ["/bin/sh", "-c", "celery -A app:celery worker -l info --without-gossip --without-mingle --without-heartbeat"]
   beatCommand: #
 
 # jobs:

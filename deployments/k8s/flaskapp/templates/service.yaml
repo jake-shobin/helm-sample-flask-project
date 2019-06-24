@@ -9,10 +9,8 @@ kind: Service
 metadata:
   name: {{ include "flaskapp.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "flaskapp.name" . }}
-    helm.sh/chart: {{ include "flaskapp.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- include "flaskapp.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
 spec:
   type: {{ $serviceType }}
   ports:
@@ -23,3 +21,4 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "flaskapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: app

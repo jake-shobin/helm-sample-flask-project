@@ -25,7 +25,7 @@ image:
   # port: 5000
   # pullPolicy: IfNotPresent
   # dockerConfig: #
-  # command: #
+  # command: []
 
 # Your app health check.
 healthcheck:
@@ -34,14 +34,16 @@ healthcheck:
   readiness: "/"
   host: ""
 
-# Hosts configuration
+# Ingress configuration
 # HTTPS is auto-enabled
 # You can route the request based on domain or uri path
 # https://kubernetes.io/docs/concepts/services-networking/ingress/#types-of-ingress
-hosts: []
-  # - host: myapp.k8s.teko.vn
-  #   paths:
-  #     - ""
+ingress:
+  annotations: {}
+  hosts: []
+    # - host: myapp.k8s.teko.vn
+    #   paths:
+    #     - ""
 
 # Your app's secrets
 # Edit here then remove
@@ -63,3 +65,9 @@ celery:
   workerCount: 1
   workerCommand: #
   beatCommand: #
+
+jobs: []
+  # - name: "a job"
+  #   command: ["/bin/sh", "-c", "echo Hello"]
+  #   image: #
+  #   schedule: "*/1 * * * *"

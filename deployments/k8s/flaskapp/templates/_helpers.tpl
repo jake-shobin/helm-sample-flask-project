@@ -46,6 +46,18 @@ Return the proper flaskapp image name
 {{- end -}}
 {{- end -}}
 
+{{/*
+Common labels
+*/}}
+{{- define "flaskapp.labels" -}}
+app.kubernetes.io/name: {{ include "flaskapp.name" .  }}
+helm.sh/chart: {{ include "flaskapp.chart" .  }}
+app.kubernetes.io/instance: {{ .Release.Name  }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote  }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service  }}
+{{- end -}}
 
 {{- define "flaskapp.secretName" -}}
 {{- include "flaskapp.name" . -}}
@@ -56,24 +68,24 @@ Return the proper flaskapp image name
 {{- end -}}
 
 {{- define "flaskapp.imagePullSecrets" -}}
-{{- if .Values.image.dockerConfig }}
+{{- if .Values.image.dockerConfig -}}
 imagePullSecrets:
-  - {{ include "flaskapp.pullSecret" . }}
+  - name: {{ include "flaskapp.pullSecret" . }}
 {{- end -}}
 {{- end -}}
 
 {{- define "flaskapp.env" -}}
-{{- $secretName := include "flaskapp.secretName" . }}
+{{- $secretName := include "flaskapp.secretName" . -}}
 env:
   {{- range $name, $value := .Values.env }}
   - name: {{ $name }}
     value: {{ $value | quote }}
-  {{ end }}
-  {{ range $name, $key := .Values.envFromSecret }}
+  {{- end }}
+  {{- range $name, $key := .Values.envFromSecret }}
   - name: {{ $name }}
     valueFrom:
       secretKeyRef:
         name: {{ $secretName }}
         key: {{ $key }}
-  {{ end }}
+  {{- end }}
 {{- end -}}
