@@ -88,8 +88,8 @@ envFromSecret:
 celery:
   enabled: False
   workerCount: 1
-  workerCommand: #
-  beatCommand: #
+  workerCommand: null
+  beatCommand: null
 
 jobs: []
   # - name: "a job"

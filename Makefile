@@ -44,17 +44,15 @@ feed-values-staging:
 	sed "s/{{ branch }}/-staging/g" deployments/k8s/values-tpl.yaml > deployments/k8s/values.yaml
 
 helm-deploy:
-	@helm upgrade $(RELEASE_NAME) teko/flaskapp -i \
+	@helm upgrade $(RELEASE_NAME) deployments/k8s/flaskapp -i \
 		--username "$(HARBOR_USERNAME)" --password "$(HARBOR_PASSWORD)" \
-		--version $(CHART_VERSION) \
 		--namespace $(RELEASE_NAME) \
 		-f deployments/k8s/values.yaml \
 		--set image.tag=$(IMAGE_TAG)
 
 helm-deploy-staging:
-	@helm upgrade staging-$(RELEASE_NAME) teko/flaskapp -i \
+	@helm upgrade staging-$(RELEASE_NAME) deployments/k8s/flaskapp -i \
 		--username "$(HARBOR_USERNAME)" --password "$(HARBOR_PASSWORD)" \
-		--version $(CHART_VERSION) \
 		--namespace staging-$(RELEASE_NAME) \
 		-f deployments/k8s/values.yaml \
 		--set image.tag=$(IMAGE_TAG)

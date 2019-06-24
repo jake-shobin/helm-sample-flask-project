@@ -98,7 +98,7 @@ celery:
   enabled: true
   workerCount: 2
   workerCommand: ["/bin/sh", "-c", "celery -A app:celery worker -l info --without-gossip --without-mingle --without-heartbeat"]
-  beatCommand: #
+  beatCommand: null
 
 jobs: []
   # - name: #
