@@ -119,7 +119,7 @@ workflows:
           requires:
             - test
       - deploy-feature:
-          context: k8s-dev
+          context: k8s-prod
           requires:
             - build-image
           filters:
@@ -127,7 +127,7 @@ workflows:
               only:
                 - /feature\/.*/
       - deploy-staging:
-          context: k8s-dev
+          context: k8s-prod
           requires:
             - build-image
           filters:
@@ -160,7 +160,6 @@ workflows:
             branches:
               ignore: /.*/
       - deploy-production:
-          context: k8s-prod
           requires:
             - deploy?
           filters:
