@@ -84,6 +84,22 @@ env:
 envFromSecret:
   # SECRET_KEY: secret-key
   # DATABASE_URL: db-url
+
+# Enable redis if you are using redis pubsub
+#  by settings enabled: true
+#  You must leave other values as default
+# NOTE: redis is used as pubsub only, without persistence
+# The redis service url will be: redis://redis-master:6379
+redis:
+  enabled: true
+
+  nameOverride: redis
+  fullnameOverride: redis
+  cluster:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
  
 celery:
   worker:
