@@ -1,6 +1,6 @@
 PROJECT_NAME := hello-flask
-IMAGE_REPO := hub.k8s.teko.vn/hello-flask/hello-flask
-HARBOR_SERVER := https://hub.k8s.teko.vn
+IMAGE_REPO := hub.teko.vn/hello-flask/hello-flask
+HARBOR_SERVER := https://hub.teko.vn
 
 RELEASE_NAME := $(PROJECT_NAME)
 IMAGE_TAG := $(VERSION)
