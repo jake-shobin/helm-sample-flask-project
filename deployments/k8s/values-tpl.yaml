@@ -38,6 +38,17 @@ app:
 
   autoscaling:
     enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 60
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: 60
 
 
 # Ingress configuration
@@ -74,14 +85,6 @@ envFromSecret:
 # The redis service url will be: redis://redis-master:6379
 redis:
   enabled: true
-
-  nameOverride: redis
-  fullnameOverride: redis
-  cluster:
-    enabled: false
-  master:
-    persistence:
-      enabled: false
 
 # Enable celery if you are using celery worker and beat
 # You must supply commands for celery worker and beat
