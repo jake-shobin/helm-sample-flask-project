@@ -20,7 +20,6 @@ image:
   registry: hub.teko.vn
   repository: hello-flask/hello-flask
   tag: build-438aeb5
-
   pullPolicy: IfNotPresent
   dockerConfig: |-
     {

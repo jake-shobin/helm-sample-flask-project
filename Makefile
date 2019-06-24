@@ -25,7 +25,7 @@ k8s-login-prod:
 	@echo "$(KUBECONFIG_CONTENT)" | base64 --decode > $(HOME)/.kube/config
 
 docker-login:
-	@echo "$(HARBOR_PASSWORD)" | docker login --username $(HARBOR_USERNAME) --password-stdin $(HARBOR_SERVER)
+	@echo "$(HARBOR_PASSWORD)" | docker login --username "$(HARBOR_USERNAME)" --password-stdin $(HARBOR_SERVER)
 
 build-image:
 	docker image build -t $(IMAGE) .
@@ -34,7 +34,7 @@ push-image:
 	docker image push $(IMAGE)
 
 helm-add-repo:
-	@helm repo add --username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) teko $(HARBOR_SERVER)/chartrepo/library
+	@helm repo add --username "$(HARBOR_USERNAME)" --password "$(HARBOR_PASSWORD)" teko $(HARBOR_SERVER)/chartrepo/library
 	helm repo update
 
 feed-values:
@@ -45,7 +45,7 @@ feed-values-staging:
 
 helm-deploy:
 	@helm upgrade $(RELEASE_NAME) teko/flaskapp -i \
-		--username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) \
+		--username "$(HARBOR_USERNAME)" --password "$(HARBOR_PASSWORD)" \
 		--version $(CHART_VERSION) \
 		--namespace $(RELEASE_NAME) \
 		-f deployments/k8s/values.yaml \
@@ -53,7 +53,7 @@ helm-deploy:
 
 helm-deploy-staging:
 	@helm upgrade staging-$(RELEASE_NAME) teko/flaskapp -i \
-		--username $(HARBOR_USERNAME) --password $(HARBOR_PASSWORD) \
+		--username "$(HARBOR_USERNAME)" --password "$(HARBOR_PASSWORD)" \
 		--version $(CHART_VERSION) \
 		--namespace staging-$(RELEASE_NAME) \
 		-f deployments/k8s/values.yaml \
