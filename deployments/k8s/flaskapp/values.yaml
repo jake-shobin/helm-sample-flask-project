@@ -34,6 +34,21 @@ healthcheck:
   readiness: "/"
   host: ""
 
+# `autoscaling` is where you specify auto-scale policy based on CPU and memory consumed
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 60
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 60
+
 # Ingress configuration
 # HTTPS is auto-enabled
 # You can route the request based on domain or uri path

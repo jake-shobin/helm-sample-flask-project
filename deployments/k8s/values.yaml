@@ -20,7 +20,7 @@ replicaCount: 1
 image:
   registry: hub.teko.vn
   repository: hello-flask/hello-flask
-  tag: 0.0.1
+  tag: build-438aeb5
   port: 5000
   pullPolicy: IfNotPresent
   dockerConfig: |-
@@ -39,6 +39,9 @@ healthcheck:
   liveness: "/"
   readiness: "/"
   host: ""
+
+autoscaling:
+  enabled: true
 
 # Ingress configuration
 # HTTPS is auto-enabled
