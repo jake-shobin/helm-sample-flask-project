@@ -8,7 +8,7 @@ metadata:
     {{- include "flaskapp.labels" . | nindent 4 }}
     app.kubernetes.io/component: celery-worker
 spec:
-  replicas: {{ .Values.celery.workerCount }}
+  replicas: {{ .Values.celery.worker.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "flaskapp.name" . }}
