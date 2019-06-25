@@ -95,6 +95,7 @@ redis:
 
   nameOverride: redis
   fullnameOverride: redis
+  usePassword: false
   cluster:
     enabled: false
   master:
