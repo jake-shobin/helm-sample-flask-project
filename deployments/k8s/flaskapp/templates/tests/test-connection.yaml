@@ -20,5 +20,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ $serviceType }}:{{ $servicePort }}']
+      args:  ['{{ include "flaskapp.fullname" . }}:{{ $servicePort }}']
   restartPolicy: Never
