@@ -19,7 +19,6 @@ spec:
         {{- include "flaskapp.labels" . | nindent 8 }}
         app.kubernetes.io/component: app
     spec:
-      {{- include "flaskapp.imagePullSecrets" . | nindent 6 }}
       containers:
         - name: app
           image: {{ template "flaskapp.image" . }}

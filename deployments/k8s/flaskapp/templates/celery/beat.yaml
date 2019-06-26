@@ -30,5 +30,4 @@ spec:
           command: 
             {{- toYaml .Values.celery.beat.command | nindent 12 -}}
           {{- include "flaskapp.env" . | nindent 10 -}}
-      {{- include "flaskapp.imagePullSecrets" . | nindent 6 }}
 {{- end }}
