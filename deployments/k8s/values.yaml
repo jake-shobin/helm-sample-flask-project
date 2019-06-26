@@ -19,7 +19,14 @@ image:
   repository: hello-flask/hello-flask
   tag: 0.0.1
   pullPolicy: IfNotPresent
-  dockerConfig: #
+  dockerConfig: |-
+    {
+      "auths": {
+        "hub.teko.vn": {
+          "auth": "ZHVuZy5ueDpJPDNSdWFDb24="
+        }
+      }
+    }
 
 app:
   # The number of instance
@@ -66,6 +73,7 @@ ingress:
 # Your app's secrets
 secrets:
   db-url: sqlite:///
+  secret-key: "something-very-secret"
 
 
 # Your app's env vars
@@ -75,7 +83,7 @@ env:
   REDIS_URL: "redis://redis-master:6379"
 
 envFromSecret:
-  # SECRET_KEY: secret-key
+  SECRET_KEY: secret-key
   DATABASE_URL: db-url
 
 # Enable redis if you are using redis pubsub
