@@ -36,9 +36,8 @@ Create chart name and version as used by the chart label.
 Return the proper flaskapp image name
 */}}
 {{- define "flaskapp.image" -}}
-{{- $repositoryName := .Values.image.repository -}}
 {{- $tag := .Values.image.tag | toString -}}
-{{- printf "%s:%s" .Values.image.registry $repositoryName $tag -}}
+{{- printf "%s:%s" .Values.image.repository $tag -}}
 {{- end -}}
 
 {{/*
