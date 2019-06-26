@@ -1,5 +1,5 @@
 {{- if .Values.jobs }}
-{{- $defaultImage := include "flaskapp.image" . }}
+{{- $defaultImage := printf "%s:%s" .Values.image.repository .Values.image.tag }}
 {{- $labels := include "flaskapp.labels" . }}
 {{- range .Values.jobs }}
 apiVersion: batch/v1beta1
