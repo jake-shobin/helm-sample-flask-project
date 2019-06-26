@@ -15,7 +15,6 @@ fullnameOverride: "hello-Flask-app"
 #     in Google Cloud Registry: https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
 #     in Docker Hub: execute command `docker login`
 image:
-  registry: docker.io
   repository: dungnx/hello-flask
   tag: 1.0.0
   pullPolicy: IfNotPresent
