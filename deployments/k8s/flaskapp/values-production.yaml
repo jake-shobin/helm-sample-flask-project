@@ -92,7 +92,7 @@ celery:
     enabled: true
     replicaCount: 2
     port: 5000
-    command: ["/bin/sh", "-c", "celery -A app:celery worker -l info --without-gossip --without-mingle --without-heartbeat"]
+    command: ["/bin/sh", "-c", "celery -A app worker -l info --without-gossip --without-mingle --without-heartbeat"]
   
   beat:
     enabled: false
