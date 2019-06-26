@@ -33,13 +33,6 @@ Create chart name and version as used by the chart label.
 
 
 {{/*
-Return the proper flaskapp image name
-*/}}
-{{- define "flaskapp.image" -}}
-{{- printf "%s:%s" .Values.image.repository .Values.image.tag -}}
-{{- end -}}
-
-{{/*
 Common labels
 */}}
 {{- define "flaskapp.labels" -}}
